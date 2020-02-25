@@ -1,0 +1,107 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdin",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      " enter user id: 1\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      " Initializing face capture. Look at the camera and wait ...\n"
+     ]
+    }
+   ],
+   "source": [
+    "import cv2\n",
+    "import os\n",
+    "# 调用笔记本内置摄像头，所以参数为0，如果有其他的摄像头可以调整参数为1，2\n",
+    "\n",
+    "cap = cv2.VideoCapture(0)\n",
+    "\n",
+    "face_detector = cv2.CascadeClassifier('/Users/maojuntao/anaconda3/pkgs/libopencv-3.4.2-h7c891bd_1/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml')\n",
+    "\n",
+    "face_id = input('\\n enter user id:')\n",
+    "\n",
+    "print('\\n Initializing face capture. Look at the camera and wait ...')\n",
+    "\n",
+    "count = 0\n",
+    "\n",
+    "while True:\n",
+    "\n",
+    "    # 从摄像头读取图片\n",
+    "\n",
+    "    sucess, img = cap.read()\n",
+    "\n",
+    "    # 转为灰度图片\n",
+    "\n",
+    "    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)\n",
+    "\n",
+    "    # 检测人脸\n",
+    "\n",
+    "    faces = face_detector.detectMultiScale(gray, 1.3, 5)\n",
+    "    \n",
+    "    for (x, y, w, h) in faces:\n",
+    "        cv2.rectangle(img, (x, y), (x+w, y+w), (255, 0, 0))\n",
+    "        count += 1\n",
+    "        \n",
+    "      # 保存图像\n",
+    "        cv2.imwrite(\"Facedata/User.\" + str(face_id) + '.' + str(count) + '.jpg', gray[y: y + h, x: x + w])\n",
+    "\n",
+    "        cv2.imshow('image', img)\n",
+    "\n",
+    "    # 保持画面的持续。\n",
+    "\n",
+    "    k = cv2.waitKey(1)\n",
+    "\n",
+    "    if k == 27:   # 通过esc键退出摄像\n",
+    "        break\n",
+    "\n",
+    "    elif count >= 1000:  # 得到1000个样本后退出摄像\n",
+    "        break\n",
+    "\n",
+    "# 关闭摄像头\n",
+    "cap.release()\n",
+    "cv2.destroyAllWindows()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
